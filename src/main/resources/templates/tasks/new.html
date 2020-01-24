@@ -12,6 +12,9 @@
     </label>
         <p th:if="${fields?.hasErrors('content')}" th:errors="*{content}">エラーメッセージ</p>
     </div>
+    <div>
+        <input type="submit" value="作成">
+    </div>
 </form>
 </body>
 </html>
