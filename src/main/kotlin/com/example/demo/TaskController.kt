@@ -1,5 +1,6 @@
 package com.example.demo
 
+import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 //./gradlew bootRun
 
-@RestController
+@Controller
 @RequestMapping("tasks")
 class TaskController {
     @GetMapping("")
@@ -16,6 +17,7 @@ class TaskController {
                 Task(1,"障子を張り替える",false),
                 Task(2,"敵検診に行く",true)
         )
-        return tasks.toString()
+        model.addAttribute("tasks", tasks)
+        return "tasks/index"
     }
 }
