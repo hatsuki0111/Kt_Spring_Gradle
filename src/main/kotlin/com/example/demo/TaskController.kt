@@ -5,12 +5,7 @@ import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.client.HttpClientErrorException
-import javax.validation.Valid
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.beans.factory.annotation.Autowired
-
+import org.springframework.http.HttpStatus
 
 
 //./gradlew bootRun
@@ -19,6 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired
 @Controller
 @RequestMapping("tasks")
 class TaskController (private val taskRepository: TaskRepository){
+
+    @ExceptionHandler(NotFoundException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun handleNotFoundException(): String = "tasks/not_found"
+
     @GetMapping("")
     fun index(model: Model): String{
         val tasks = taskRepository.findAll()
@@ -43,7 +43,7 @@ class TaskController (private val taskRepository: TaskRepository){
 
     @GetMapping("{id}/edit")
     fun edit(@PathVariable("id") id: Long, form: TaskUpdateForm): String{
-        val task = taskRepository.findbyId(id) ?: throw ClassNotFoundException()
+        val task = taskRepository.findbyId(id) ?: throw NotFoundException()
         form.content = task.content
         form.done = task.done
         return "tasks/edit"
@@ -55,7 +55,7 @@ class TaskController (private val taskRepository: TaskRepository){
             return "tasks/edit"
         }
 
-        val task = taskRepository.findbyId(id) ?: throw ClassNotFoundException()
+        val task = taskRepository.findbyId(id) ?: throw NotFoundException()
         val newTask = task.copy(content = requireNotNull(form.content), done = form.done)
         taskRepository.update(newTask)
         return "redirect:/tasks"

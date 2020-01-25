@@ -2,4 +2,4 @@ package com.example.demo
 
 import java.lang.RuntimeException
 
-class NotFoundExeption : RuntimeException()
+class NotFoundException : RuntimeException()
