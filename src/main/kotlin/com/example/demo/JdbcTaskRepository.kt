@@ -13,7 +13,7 @@ class JdbcTaskRepository(private val jdbcTemplate: JdbcTemplate) : TaskRepositor
 
     override fun create(content: String): Task{
         jdbcTemplate.update("INSERT INTO task(content) VALUES(?)", content)
-        val id = jdbcTemplate.queryForObject("CALL IDENTITY()", Long::class.java)
+        val id: Long? = jdbcTemplate.queryForObject("CALL IDENTITY()")
         return Task(id, content, false)
     }
 

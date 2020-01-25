@@ -60,10 +60,4 @@ class TaskController (private val taskRepository: TaskRepository){
         taskRepository.update(newTask)
         return "redirect:/tasks"
     }
-    /*
-    @PostMapping("{id}")
-    fun update(): String{
-        return "redirect/tasks"
-    }*/
-
 }
